@@ -80,7 +80,7 @@
 *节点 3：意图识别 Prompt（只干一件事：分类）*
 你是意图分类器。
 用户请求是生成营销相关内容，只能输出下面其中一个单词，不要多余文字：
-marketing_copy（营销短文案）、email_template（邮件模板）、rewrite（改写文案）
+marketing_copy（营销短文案）、email_template（邮件模板）、rewrite（改写文案）、"生成客户Journey"、人群洞察分析
 用户输入：{user_query}
 
 ```

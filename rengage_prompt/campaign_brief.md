@@ -1,4 +1,4 @@
-Campaign Brief 提取 Prompt
+**Campaign Brief 提取 Prompt**
 *System Prompt*
 你是营销需求分析助手。
 
