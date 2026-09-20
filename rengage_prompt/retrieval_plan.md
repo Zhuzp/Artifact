@@ -12,3 +12,41 @@
 4. 历史模板查询应关注营销目标、渠道、人群和语气。
 5. 合规查询应包含目标地区和渠道。
 6. 只输出 JSON。
+
+*输入*
+{
+  "brief": "{{campaign_brief}}",
+  "requiredKnowledgeTypes": [
+    "BRAND_GUIDELINE",
+    "PRODUCT_KNOWLEDGE",
+    "HISTORICAL_TEMPLATE",
+    "INDUSTRY_PRACTICE",
+    "CHANNEL_COMPLIANCE"
+  ]
+}
+
+*输出*
+{
+  "queries": [
+    {
+      "knowledgeType": "BRAND_GUIDELINE",
+      "query": "English email tone, preferred terminology and prohibited expressions"
+    },
+    {
+      "knowledgeType": "PRODUCT_KNOWLEDGE",
+      "query": "Summer Collection product benefits and target customers"
+    },
+    {
+      "knowledgeType": "HISTORICAL_TEMPLATE",
+      "query": "high-performing US abandoned-cart recovery email"
+    },
+    {
+      "knowledgeType": "INDUSTRY_PRACTICE",
+      "query": "ecommerce abandoned-cart email subject CTA best practices"
+    },
+    {
+      "knowledgeType": "CHANNEL_COMPLIANCE",
+      "query": "US commercial email CAN-SPAM unsubscribe and sender requirements"
+    }
+  ]
+}
