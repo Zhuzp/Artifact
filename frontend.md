@@ -1,0 +1,6 @@
+**template模板编辑部分具体如何做的**
+template编辑部分。我理解一下，其实整个整个template，底层是一个保存在mobx里的json树，包含key，tagName，attributes,content,children。拖拽的时候，把这个组件的数据放到mobx里的canvas.dragged上，然后图标进到canvas里，每个节点包了一层selector进行监听，进到这个selector，判断是上下放还是左右放，然后根据offset判断左右，不同的组件只能放在他上一层的节点下，比如column只能放在section下，松手的时候，执行component.insertChildren()，确定目标容器和插入位置，再修改组件树的 children 数组。如果是画布上已有组件，还要在原位置移除他
+
+
+**journey编辑部分具体是如何做的**
+也就是开始拖拽的时候会把节点type存到datatransfer里，然后拖到画布里，松手时落点后先通过getClosestEdge判断上方是不是有附近的节点，有的话就调用createNodeAndConnect创建节点，并往edge里添加一条from to的连线，没有就只创建节点，从datatransfer里取出type，在画布里创建对应type的节点
