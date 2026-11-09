@@ -6,6 +6,40 @@ ingest/event → Kafka 用户事件 → Java 匹配
 发布 → Kafka 人群任务 → Java 分页拆分成员
      → Kafka 执行任务 → Java 执行器
 
+**邮件编辑**
+*增*
+TemplateService.create 补默认值后整行写入：
+- 没有 uuid 就 UUID.randomUUID()
+- version 缺省为 1，status 缺省 draft，type 缺省 email
+- 没有名字就用 New {type}，没有主题就用 Untitled — {name}
+- content 如果是对象，用 Jackson 写成 JSON 字符串；已经是字符串就原样存
+- createdAt / updatedAt / lastViewedAt 都设成现在
+落库用的是 TemplateRepository.save：先 updateById，更新到 0 行再 insert。所以带已有 uuid 再调创建，会覆盖那一行，而不是报冲突。
+
+*查*
+两条单条接口都带完整 content 和 htmlContent：
+
+GET /api/template/template/get/{uuid}
+GET /api/template/template/getTemplateByUuidAndVersion?uuid=&version=
+
+列表有两条：
+
+GET /api/template/template：分页，不带 content
+GET /api/template/template/tab：同样的查询；needContent=true 才把 JSON 带回去
+
+分页从 1 开始，服务里换成 offset = (pageNum - 1) * pageSize。SQL 在 TemplateRepository.xml：type 精确匹配，snippet 精确匹配，keywords 对 name、title 做不区分大小写的 LIKE，按 updated_at DESC。
+
+*改*
+PUT /api/template/template，必须带 uuid。先 selectById，没有就 400。 
+这是按字段的部分更新：请求里为 null 的字段不动，非 null 才覆盖。content 同样先序列化再写入。然后：
+
+isAddVersion=true：当前 version + 1，仍然写在同一行，旧版本不另存
+否则如果传了 version，就直接设成这个数
+updatedAt 更新为现在
+
+*删*
+DELETE /api/template/template，body 是 { "uuids": ["..."] }。uuids 为空直接 400。有值就 deleteByIds，物理删除，没有软删，也不检查是否被 journey 引用。成功固定返回 true。
+
 **画布编辑**
 *涉及表*
 `journey_workflow`-`JourneyEntity`
