@@ -321,3 +321,8 @@ RabbitMQ 里面核心角色：**生产者、交换机、队列、消费者**
 2. **交换机 Exchange**：就是一个**消息路由器**。收到消息之后，按照规则把消息分发到不同队列。
 3. **队列 Queue**：存放消息的盒子，消息最终存在队列里。消费者从队列拿消息干活。
 4. **消费者**：从队列取消息处理（vector_consumer、graph_consumer）。
+
+**LangChain和Langgraph区别**
+langchain有两种工作流
+1. *LCEL Chain（链式）*：单向流水线，跑一遍就结束，没有内置循环。
+2. *内置 Agent（ToolCallingAgent / OpenAIToolsAgent）*：*封装好的、固定规则的循环 Agent*，它内部已经写死了「思考→调用工具→再思考」这个循环，*有点像一个低配、黑盒版的 LangGraph*，但不是真正的 LangGraph。
